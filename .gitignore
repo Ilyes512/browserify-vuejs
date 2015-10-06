@@ -1,5 +1,3 @@
 node_modules
-build/app.css
-build/app.css.map
-build/app.js
-build/app.js.map
+build/*
+!build/.gitkeep

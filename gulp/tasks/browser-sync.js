@@ -1,0 +1,17 @@
+import config from '../config';
+
+import gulp from 'gulp';
+
+import {create} from 'browser-sync';
+
+const browserSync = create(config.appname);
+
+gulp.task('serve', function () {
+  browserSync.init({
+    server: {
+      baseDir: config.app
+    },
+    port: 8080,
+    notify: false
+  });
+});
