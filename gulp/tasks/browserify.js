@@ -53,8 +53,9 @@ gulp.task('browserify:dev', function () {
   }
 
   // Transformers
-  bundler.transform(babelify);
-  bundler.transform(partialify);
+  bundler
+    .transform(babelify, {presets: ['es2015']})
+    .transform(partialify);
 
   libs.forEach(function (lib) {
     bundler.exclude(lib);
@@ -89,13 +90,13 @@ gulp.task('browserify:vendor', function () {
  */
 gulp.task('browserify:build', function () {
   var bundler = browserify({
-    entries: config.browserify.dev.entries,
-    transform: [
-      babelify,
-      partialify,
-      stripify
-    ]
+    entries: config.browserify.dev.entries
   });
+
+  bundler
+    .transform(babelify, {presets: ['es2015']})
+    .transform(partialify)
+    .transform(stripify);
 
   libs.forEach(function (lib) {
     bundler.exclude(lib);
