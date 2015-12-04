@@ -1,8 +1,6 @@
 import config from '../config';
 import options from '../options';
 
-import _ from 'lodash';
-
 import gulp from 'gulp';
 import gutil from 'gulp-util';
 //import gulpif from 'gulp-if';
@@ -40,7 +38,7 @@ gulp.task('browserify:dev', function () {
     debug: options.debug
   };
 
-  var opts = _.extend({}, watchify.args, devOpts);
+  var opts = Object.assign({}, watchify.args, devOpts);
   var bundler = watchify(browserify(opts));
 
   function bundle() {
