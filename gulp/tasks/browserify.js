@@ -35,11 +35,25 @@ gulp.task('browserify:dev', function () {
     packageCache: {},
     fullPaths: true,
     extensions: ['.js', '.html', '.json'],
-    debug: options.debug
+    debug: options.debug,
+    plugin: [watchify],
   };
 
   var opts = Object.assign({}, watchify.args, devOpts);
-  var bundler = watchify(browserify(opts));
+  var bundler = browserify(opts);
+
+  // Transformers
+  bundler
+    .transform(babelify, {
+      presets: ['es2015'],
+    })
+    .transform(partialify);
+
+  libs.forEach(function (lib) {
+    bundler.exclude(lib);
+  });
+
+  bundler.on('update', bundle);
 
   function bundle() {
     return bundler.bundle()
@@ -49,17 +63,6 @@ gulp.task('browserify:dev', function () {
       .pipe(buffer())
       .pipe(gulp.dest(config.app));
   }
-
-  // Transformers
-  bundler
-    .transform(babelify, {presets: ['es2015']})
-    .transform(partialify);
-
-  libs.forEach(function (lib) {
-    bundler.exclude(lib);
-  });
-
-  bundler.on('update', bundle);
 
   return bundle();
 });
@@ -79,7 +82,7 @@ gulp.task('browserify:vendor', function () {
   return bundler.bundle()
     .pipe(source(config.browserify.vendor.out))
     .pipe(buffer())
-    .on('error', gutil.log)
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
     .pipe(gulp.dest(config.app));
 });
 
@@ -92,7 +95,9 @@ gulp.task('browserify:build', function () {
   });
 
   bundler
-    .transform(babelify, {presets: ['es2015']})
+    .transform(babelify, {
+      presets: ['es2015'],
+    })
     .transform(partialify)
     .transform(stripify);
 
