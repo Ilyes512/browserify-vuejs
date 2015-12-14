@@ -46,6 +46,7 @@ gulp.task('browserify:dev', function () {
   bundler
     .transform(babelify, {
       presets: ['es2015'],
+      plugins: ['transform-runtime'],
     })
     .transform(partialify);
 
@@ -97,6 +98,7 @@ gulp.task('browserify:build', function () {
   bundler
     .transform(babelify, {
       presets: ['es2015'],
+      plugins: ['transform-runtime'],
     })
     .transform(partialify)
     .transform(stripify);
