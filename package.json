@@ -1,7 +1,7 @@
 {
-    "name": "vueplay",
+    "name": "browserify-vuejs",
     "version": "0.1.0",
-    "description": "A VueJS app template",
+    "description": "A Browserify starter for VueJS",
     "main": "./build/app.min.js",
     "author": "Ilyes Ahidar",
     "licence": "MIT",
